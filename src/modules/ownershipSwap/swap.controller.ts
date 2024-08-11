@@ -1,6 +1,6 @@
 import { Controller, Body, Post, Param } from "@nestjs/common";
-import { swapCreator } from "./swap.service.js";
-import { SwapDto } from "./dto/SwapDto.js";
+import { swapCreator } from "./swap.service";
+import { SwapDto } from "./dto/SwapDto";
 
 @Controller()
 export class SwapController {

@@ -1,6 +1,6 @@
 import { Controller, Body, Put, Param } from "@nestjs/common";
-import { nftCreator } from "./nft.service.js";
-import { NftDto } from "./dto/NftDto.js";
+import { nftCreator } from "./nft.service";
+import { NftDto } from "./dto/NftDto";
 
 @Controller()
 export class NftController {

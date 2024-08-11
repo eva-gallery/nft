@@ -1,6 +1,6 @@
 import { Controller, Body, Put } from "@nestjs/common";
 import { collectionCreator } from "./collection.service";
-import { CollectionDto } from "./dto/CollectionDto.js";
+import { CollectionDto } from "./dto/CollectionDto";
 
 @Controller()
 export class CollectionController {

@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Query } from "@nestjs/common";
-import { metadataService } from "./metadata.service.js";
+import { metadataService } from "./metadata.service";
 
 @Controller()
 export class MetadataController {

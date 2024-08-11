@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -10,7 +9,7 @@
     "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
+    "baseUrl": "src",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
@@ -19,8 +18,8 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@common/*": ["src/common/*"],
-      "@modules/*": ["src/modules/*"]
+      "@common/*": ["common/*"],
+      "@modules/*": ["modules/*"]
     }
   }
 }
