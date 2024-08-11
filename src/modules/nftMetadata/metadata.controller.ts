@@ -1,9 +1,9 @@
 import { Controller, Get, Param, Query } from "@nestjs/common";
-import { nftModuleService } from "./metadata.service.js";
+import { metadataService } from "./metadata.service.js";
 
 @Controller()
 export class MetadataController {
-  constructor(private readonly appService: nftModuleService) {}
+  constructor(private readonly appService: metadataService) {}
 
   @Get("address/:address")
   getAccountNFTs(@Param('address') address: string) {

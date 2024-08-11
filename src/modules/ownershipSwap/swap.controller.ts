@@ -10,6 +10,6 @@ export class SwapController {
   GetData(@Body() nft: SwapDto,
   @Param('collection') collection: number,
   @Param('asset') asset: number) {
-    return this.appService.createNFTcall(collection, asset, nft);
+    return this.appService.createSwapCall(collection, asset, nft);
   }
 }

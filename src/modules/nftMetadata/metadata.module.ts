@@ -1,10 +1,10 @@
 import { Module } from "@nestjs/common";
 import { MetadataController } from "./metadata.controller";
-import { nftModuleService } from "./metadata.service";
+import { metadataService } from "./metadata.service";
 
 @Module({
   imports: [],
   controllers: [MetadataController],
-  providers: [nftModuleService],
+  providers: [metadataService],
 })
 export class MetadataModule {}

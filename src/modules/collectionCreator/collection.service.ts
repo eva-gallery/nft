@@ -5,6 +5,7 @@ import { SubmittableExtrinsic } from "@polkadot/api/types";
 import { CollectionDto } from "./dto/CollectionDto";
 import { ConfigService } from "@nestjs/config";
 import { AppConfig } from "@common/config";
+import { Extrinsic } from "@polkadot/types/interfaces";
 
 function createArgsForNftPallet(
   account: string,
@@ -52,7 +53,7 @@ async function nextCollectionId(apiPromise: ApiPromise) {
 export class collectionCreator {
   constructor(private configService: ConfigService<AppConfig>) {}
 
-  async createCollectionCall(collection: CollectionDto): Promise<any> {
+  async createCollectionCall(collection: CollectionDto): Promise<Extrinsic> {
     const { owner, metadata } = collection;
 
     const wsProvider = new WsProvider(this.configService.get("WSS_ENDPOINT"));
