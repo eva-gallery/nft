@@ -8,8 +8,8 @@ import { AppConfig } from "@common/config";
 @Injectable()
 export class swapCreator {
   constructor(private configService: ConfigService<AppConfig>) {}
-  async createNFTcall(nft: SwapDto): Promise<any> {
-    const { address, collectionID, assetID } = nft;
+  async createNFTcall(collectionID: number, assetID: number, nft: SwapDto): Promise<any> {
+    const { address } = nft;
     const wsProvider = new WsProvider(this.configService.get("WSS_ENDPOINT"));
     const api = await ApiPromise.create({ provider: wsProvider });
 

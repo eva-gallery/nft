@@ -7,13 +7,11 @@ export class Metadata {
   description: string;
   @IsNotEmpty()
   ipfs: string;
+  @IsNotEmpty()
+  author: string;
 }
 
 export class NftDto {
   @IsNotEmpty()
   metadata: Metadata;
-  @IsNotEmpty()
-  address: string;
-  @IsNotEmpty()
-  collectionID: number;
 }

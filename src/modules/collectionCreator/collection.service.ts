@@ -53,14 +53,14 @@ export class collectionCreator {
   constructor(private configService: ConfigService<AppConfig>) {}
 
   async createCollectionCall(collection: CollectionDto): Promise<any> {
-    const { address, metadata } = collection;
+    const { owner, metadata } = collection;
 
     const wsProvider = new WsProvider(this.configService.get("WSS_ENDPOINT"));
     const api = await ApiPromise.create({ provider: wsProvider });
     const collectionId = await nextCollectionId(api);
     console.log("Next collection id:", collectionId);
     const calls: SubmittableExtrinsic<"promise">[] = [
-      createCollection(api, address),
+      createCollection(api, owner),
     ];
     if (metadata) {
       calls.push(

@@ -1,4 +1,4 @@
-import { Controller, Body, Post } from "@nestjs/common";
+import { Controller, Body, Put } from "@nestjs/common";
 import { collectionCreator } from "./collection.service";
 import { CollectionDto } from "./dto/CollectionDto.js";
 
@@ -6,7 +6,7 @@ import { CollectionDto } from "./dto/CollectionDto.js";
 export class CollectionController {
   constructor(private readonly appService: collectionCreator) {}
 
-  @Post("generatecol")
+  @Put("collection")
   GetCollection(@Body() collection: CollectionDto) {
     return this.appService.createCollectionCall(collection);
   }
