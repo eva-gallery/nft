@@ -20,6 +20,12 @@ import { collectionCreator } from "@modules/collectionCreator/collection.service
     SwapModule,
   ],
   controllers: [AppController],
-  providers: [AppService, swapCreator, metadataService, nftCreator, collectionCreator],
+  providers: [
+    AppService,
+    swapCreator,
+    metadataService,
+    nftCreator,
+    collectionCreator,
+  ],
 })
 export class AppModule {}

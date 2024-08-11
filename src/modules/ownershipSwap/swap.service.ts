@@ -9,7 +9,11 @@ import { Extrinsic } from "@polkadot/types/interfaces";
 @Injectable()
 export class swapCreator {
   constructor(private configService: ConfigService<AppConfig>) {}
-  async createSwapCall(collectionID: number, assetID: number, nft: SwapDto): Promise<Extrinsic> {
+  async createSwapCall(
+    collectionID: number,
+    assetID: number,
+    nft: SwapDto,
+  ): Promise<Extrinsic> {
     const { address } = nft;
     const wsProvider = new WsProvider(this.configService.get("WSS_ENDPOINT"));
     const api = await ApiPromise.create({ provider: wsProvider });

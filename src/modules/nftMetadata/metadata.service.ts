@@ -1,11 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import "@polkadot/api-augment";
 import { getClient } from "@kodadot1/uniquery";
-import { Result } from "@polkadot/types";
 
 @Injectable()
 export class metadataService {
-  async getAccountNFTMetadata(address: string): Promise<String> {
+  async getAccountNFTMetadata(address: string): Promise<string> {
     const client = getClient("ahk" as any);
     const query = client.itemListByOwner(address);
 

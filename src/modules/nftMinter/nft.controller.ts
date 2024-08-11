@@ -7,8 +7,7 @@ export class NftController {
   constructor(private readonly appService: nftCreator) {}
 
   @Put("collection/:id/asset")
-  GetNft(@Body() nft: NftDto, 
-  @Param('id') collectionID: number,) {
+  GetNft(@Body() nft: NftDto, @Param("id") collectionID: number) {
     return this.appService.createNFTcall(collectionID, nft);
   }
 }
