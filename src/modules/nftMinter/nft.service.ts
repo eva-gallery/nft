@@ -51,10 +51,10 @@ export class nftCreator {
       const meta = { name, description, ipfs };
       const wsProvider = new WsProvider(this.config.get("WSS_ENDPOINT"));
       const api = await ApiPromise.create({ provider: wsProvider });
-  
+
       const nextNFT = await nextItemId(api, collectionID);
       console.log("Next nft id:", nextNFT);
-  
+
       const calls: SubmittableExtrinsic<"promise">[] = [
         createNFT(api, collectionID.toString(), nextNFT.toString(), author),
       ];
@@ -68,14 +68,13 @@ export class nftCreator {
           ),
         );
       }
-  
+
       // Create the batched transaction
       const batchAllTx = api.tx.utility.batchAll(calls);
-  
+
       // Return the batched transaction in a human-readable format
       return batchAllTx;
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error creating swap call", error);
       return error;
     }

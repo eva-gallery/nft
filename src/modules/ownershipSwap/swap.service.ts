@@ -6,7 +6,6 @@ import { ConfigService } from "@nestjs/config";
 import { AppConfig } from "@common/config";
 import { Extrinsic } from "@polkadot/types/interfaces";
 
-
 @Injectable()
 export class swapCreator {
   constructor(private configService: ConfigService<AppConfig>) {}
@@ -22,8 +21,7 @@ export class swapCreator {
     try {
       const call = api.tx.nfts.transfer(collectionID, assetID, address);
       return call;
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error creating swap call", error);
       return error;
     }

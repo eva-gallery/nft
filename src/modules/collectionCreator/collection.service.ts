@@ -55,27 +55,28 @@ export class collectionCreator {
 
   async createCollectionCall(collection: CollectionDto): Promise<Extrinsic> {
     try {
-    const { owner, metadata } = collection;
+      const { owner, metadata } = collection;
 
-    const wsProvider = new WsProvider(this.configService.get("WSS_ENDPOINT"));
-    const api = await ApiPromise.create({ provider: wsProvider });
-    const collectionId = await nextCollectionId(api);
-    console.log("Next collection id:", collectionId);
-    const calls: SubmittableExtrinsic<"promise">[] = [
-      createCollection(api, owner),
-    ];
-    if (metadata) {
-      calls.push(
-        setCollectionMetadata(api, collectionId, JSON.stringify(metadata)),
-      );
+      const wsProvider = new WsProvider(this.configService.get("WSS_ENDPOINT"));
+      const api = await ApiPromise.create({ provider: wsProvider });
+      const collectionId = await nextCollectionId(api);
+      console.log("Next collection id:", collectionId);
+      const calls: SubmittableExtrinsic<"promise">[] = [
+        createCollection(api, owner),
+      ];
+      if (metadata) {
+        calls.push(
+          setCollectionMetadata(api, collectionId, JSON.stringify(metadata)),
+        );
+      }
+      // Create the batched transaction
+      const batchAllTx = api.tx.utility.batchAll(calls);
+
+      // Return the batched transaction in a human-readable format
+      return batchAllTx;
+    } catch (error) {
+      console.error("Error creating collection call", error);
+      return error;
     }
-    // Create the batched transaction
-    const batchAllTx = api.tx.utility.batchAll(calls);
-
-    // Return the batched transaction in a human-readable format
-    return batchAllTx;
-  } catch (error) {
-    console.error("Error creating collection call", error);
-    return error;
   }
-}}
+}
