@@ -1,73 +1,93 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-  
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
+To install and start module use following commands
 ```bash
-$ npm install
+npm install //This installs dependencies
+npm run start:dev //This starts development instance of REST API (Do not forget to create and fill .env file)
 ```
 
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+## PUT /collection/{id}/asset
+Endpoint to generate NFT based on provided parameters.
+Example of JSON Body: 
+```
+{
+          "metadata": {
+              "name": "Example asset name",
+              "description": "Example asset description",
+              "ipfs": "IPFS image link"
+              "author": "address"
+          },
+}
 ```
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+## PUT /collection
+Endpoint to generate new collection based on provided parameters.
+Example of JSON Body:
+```
+{
+          "owner": "address"
+          "metadata": {
+              "name": "Example NFT name",
+              "description": "Example NFT description",   //OPTIONAL PARAMETER
+              "ipfs": "IPFS image link" //OPTIONAL PARAMETER
+          },
+}
 ```
 
-## Support
+## POST /transfer/collection/{collection}/asset/{asset}
+Endpoint to change owner of the non-fungible asset.
+Example of JSON Body:
+```
+{
+          "address": "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",
+}
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+All POST endpoints return HEX encoded call that is then passed to BE which prompts signer to sign the transaction (Implementation to BE will be added soon)
 
-## Stay in touch
+## GET /address/{address}
+Requires 1 url parameter called ```address``` returns all NFTs owned by provided address.
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Example of FETCH REQUEST Implementation
+```
+    const response = await fetch("http://localhost:3000/collection/1/asset", {
+      method: 'PUT',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          "metadata": {
+              "name": "Example asset name",
+              "description": "Example asset description",
+              "ipfs": "IPFS image link"
+              "author": "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg"
+          },
+       })
+    });
+  const resp = await response.json();
+```
 
-## License
+Returns following call HEX:
+```
+"0x71020428020834030100000002000000006cf3e7bf1cc5f0b87e7aaa8bc5acf2489651b14e768bcf5d9206f878778f4404003418010000000200000081017b226e616d65223a224578616d706c65206173736574206e616d65222c226465736372697074696f6e223a224578616d706c65206173736574206465736372697074696f6e222c2269706673223a224950465320696d616765206c696e6b227d"
+```
 
-  Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Which when decoded turns into the following BATCH of calls to create NFT:
+
+<img width="1135" alt="img" src="https://github.com/user-attachments/assets/ea18b53e-adcb-4864-9a05-e37ef2817fea">
+
+## Test GET endpoints:
+- test-create-collection
+- test-create-nft
+- test-query-metadata
+- test-create-swap
+
+## E2E tests:
+npm run test:e2e
+
+## .env
+.env example
+
+PORT=3000
+
+BACKEND_URL=http://localhost:4200
+
+WSS_ENDPOINT=wss://sys.dotters.network/statemine
