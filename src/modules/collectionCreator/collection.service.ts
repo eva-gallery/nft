@@ -54,6 +54,7 @@ export class collectionCreator {
   constructor(private configService: ConfigService<AppConfig>) {}
 
   async createCollectionCall(collection: CollectionDto): Promise<Extrinsic> {
+    try {
     const { owner, metadata } = collection;
 
     const wsProvider = new WsProvider(this.configService.get("WSS_ENDPOINT"));
@@ -73,5 +74,8 @@ export class collectionCreator {
 
     // Return the batched transaction in a human-readable format
     return batchAllTx;
+  } catch (error) {
+    console.error("Error creating collection call", error);
+    return error;
   }
-}
+}}
