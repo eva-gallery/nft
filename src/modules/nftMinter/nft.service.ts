@@ -47,8 +47,8 @@ export class nftCreator {
   async createNFTcall(collectionID: number, nft: NftDto): Promise<Extrinsic> {
     try {
       const { metadata } = nft;
-      const { name, description, ipfs, author } = metadata;
-      const meta = { name, description, ipfs };
+      const { name, description, image, author } = metadata;
+      const meta = { name, description, image };
       const wsProvider = new WsProvider(this.config.get("WSS_ENDPOINT"));
       const api = await ApiPromise.create({ provider: wsProvider });
 
