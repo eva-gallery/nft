@@ -36,7 +36,7 @@ export class AppService {
       metadata: {
         name: "mockedName",
         description: "mockedDescription",
-        ipfs: "mockedIpfs",
+        image: "mockedIpfs",
         author: "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",
       },
     };
@@ -48,7 +48,7 @@ export class AppService {
     const collectionMeta = {
       name: "mockedName",
       description: "mockedDescription",
-      ipfs: "mockedIpfs",
+      image: "mockedIpfs",
     };
     const collectionDto: CollectionDto = {
       owner: "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",

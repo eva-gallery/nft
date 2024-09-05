@@ -12,7 +12,7 @@ export class Metadata {
   })
   description: string;
   @Matches(/^ipfs:\/\/.*/, { message: "ipfs must start with ipfs://" })
-  ipfs: string;
+  image: string;
 }
 
 export class CollectionDto {

@@ -7,9 +7,6 @@ export class metadataService {
   async getAccountNFTMetadata(address: string): Promise<string> {
     const client = getClient("ahk" as any);
     const query = client.itemListByOwner(address);
-
-    console.log(JSON.stringify(query, null, 2));
-
     try {
       const result = await client.fetch<any>(query);
 
