@@ -1,4 +1,4 @@
-import { IsNotEmpty, Matches, Length, ValidateNested } from "class-validator";
+import { IsNotEmpty, Matches, Length, ValidateNested, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
 
 export class Metadata {
@@ -7,10 +7,12 @@ export class Metadata {
     message: "Name can only contain numbers, characters, and spaces",
   })
   name: string;
+  @IsOptional()
   @Matches(/^[a-zA-Z0-9 ]*$/, {
-    message: "Description can only contain numbers, characters, and spaces",
+    message: "metadata can only contain numbers, characters, and spaces",
   })
-  description: string;
+  metadata: string;
+  @IsOptional()
   @Matches(/^ipfs:\/\/.*/, { message: "ipfs must start with ipfs://" })
   image: string;
 }
@@ -27,5 +29,5 @@ export class CollectionDto {
   @IsNotEmpty()
   @ValidateNested() // Ensure that nested objects are validated
   @Type(() => Metadata) // Required for class-transformer to handle nested objects
-  metadata: Metadata;
+  meta: Metadata;
 }

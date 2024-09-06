@@ -47,12 +47,12 @@ export class AppService {
   async testCreateCol(): Promise<Extrinsic> {
     const collectionMeta = {
       name: "mockedName",
-      description: "mockedDescription",
+      metadata: "mockedDescription",
       image: "mockedIpfs",
     };
     const collectionDto: CollectionDto = {
       owner: "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",
-      metadata: collectionMeta,
+      meta: collectionMeta,
     };
     return await this.collectionCreator.createCollectionCall(collectionDto);
   }

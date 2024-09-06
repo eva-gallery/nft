@@ -55,7 +55,7 @@ export class collectionCreator {
 
   async createCollectionCall(collection: CollectionDto): Promise<Extrinsic> {
     try {
-      const { owner, metadata } = collection;
+      const { owner, meta } = collection;
 
       const wsProvider = new WsProvider(this.configService.get("WSS_ENDPOINT"));
       const api = await ApiPromise.create({ provider: wsProvider });
@@ -64,9 +64,9 @@ export class collectionCreator {
       const calls: SubmittableExtrinsic<"promise">[] = [
         createCollection(api, owner),
       ];
-      if (metadata) {
+      if (meta) {
         calls.push(
-          setCollectionMetadata(api, collectionId, JSON.stringify(metadata)),
+          setCollectionMetadata(api, collectionId, JSON.stringify(meta)),
         );
       }
       // Create the batched transaction
