@@ -13,7 +13,9 @@ export class Metadata {
   })
   metadata: string;
   @IsNotEmpty()
-  @Matches(/^ipfs:\/\/.*/, { message: "ipfs must start with ipfs://" })
+  @Matches(/^[a-zA-Z0-9 ]*$/, {
+    message: "Image path can only contain numbers, characters, and spaces",
+  })  
   image: string;
   @IsNotEmpty()
   @Matches(/^[a-zA-Z0-9]*$/, {
