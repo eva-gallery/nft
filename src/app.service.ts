@@ -33,9 +33,9 @@ export class AppService {
 
   async testCreateNft(): Promise<Extrinsic> {
     const nft: NftDto = {
-      metadata: {
+      meta: {
         name: "mockedName",
-        description: "mockedDescription",
+        metadata: "mockedDescription",
         image: "mockedIpfs",
         author: "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",
       },

@@ -11,7 +11,7 @@ export class Metadata {
   @Matches(/^[a-zA-Z0-9 ]*$/, {
     message: "Description can only contain numbers, characters, and spaces",
   })
-  description: string;
+  metadata: string;
   @IsNotEmpty()
   @Matches(/^ipfs:\/\/.*/, { message: "ipfs must start with ipfs://" })
   image: string;
@@ -29,5 +29,5 @@ export class NftDto {
   @IsNotEmpty()
   @ValidateNested() // Ensure that nested objects are validated
   @Type(() => Metadata) // Required for class-transformer to handle nested objects
-  metadata: Metadata;
+  meta: Metadata;
 }
