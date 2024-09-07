@@ -32,12 +32,12 @@ async function nextItemId(apiPromise: ApiPromise, collectionID: number) {
     const api = apiPromise;
     const result = await api.query.nfts.collection(collectionID.toString());
 
-    const itemsCount = result.unwrap();
-    const nextItemId = itemsCount.items.toNumber();
+    const itemsList = result.unwrap();
+    const nextItemId = itemsList.items.toNumber();
     return nextItemId + 1;
   } catch (error) {
     console.error("Error getting NFT id", error);
-    return undefined;
+    return 1;
   }
 }
 
