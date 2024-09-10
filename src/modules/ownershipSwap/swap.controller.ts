@@ -7,7 +7,7 @@ export class SwapController {
   constructor(private readonly appService: swapCreator) {}
 
   @Post("transfer/collection/:collection/asset/:asset")
-  GetData(
+  getSwap(
     @Body() swapDto: SwapDto,
     @Param("collection") collection: number,
     @Param("asset") asset: number,

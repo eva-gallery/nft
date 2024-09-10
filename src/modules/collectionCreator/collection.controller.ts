@@ -7,7 +7,7 @@ export class CollectionController {
   constructor(private readonly appService: collectionCreator) {}
 
   @Put("collection")
-  GetCollection(@Body() collection: CollectionDto) {
+  getCollection(@Body() collection: CollectionDto) {
     return this.appService.createCollectionCall(collection);
   }
 }
