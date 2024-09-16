@@ -17,14 +17,9 @@ export class Metadata {
     message: "Image path can only contain numbers, characters, and spaces",
   })  
   image: string;
-  @IsNotEmpty()
-  @Matches(/^[a-zA-Z0-9]*$/, {
-    message: "Address can only contain numbers and characters",
-  })
-  author: string;
 }
 
-export class NftDto {
+export class UpdaterDto {
   @IsNotEmpty()
   @ValidateNested() // Ensure that nested objects are validated
   @Type(() => Metadata) // Required for class-transformer to handle nested objects
