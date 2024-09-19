@@ -63,7 +63,7 @@ export class nftCreator {
           api,
           collectionID.toString(),
           nextNFT.toString(),
-          JSON.stringify(metadata),
+          metadata.toString(),
         ),
       );
 
