@@ -1,9 +1,11 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import "@polkadot/api-augment";
 import { getClient } from "@kodadot1/uniquery";
 
 @Injectable()
 export class metadataService {
+  private readonly logger = new Logger(metadataService.name)
+
   async getAccountNFTMetadata(address: string): Promise<string> {
     const client = getClient("ahk" as any);
     const query = client.itemListByOwner(address);
@@ -12,7 +14,7 @@ export class metadataService {
 
       return result.data?.items;
     } catch (error) {
-      console.error(error);
+      this.logger.error(error);
       return null;
     }
   }

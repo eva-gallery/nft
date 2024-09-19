@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import "@polkadot/api-augment";
 import { SubmittableExtrinsic } from "@polkadot/api/types";
@@ -44,29 +44,30 @@ async function nextCollectionId(apiPromise: ApiPromise) {
 
     return (result as any).unwrap().toNumber();
   } catch (error) {
-    console.error("Error getting collection id", error);
+    this.logger.error("Error getting collection id", error);
     return undefined;
   }
 }
 
 @Injectable()
 export class collectionCreator {
+  private readonly logger = new Logger(collectionCreator.name)
   constructor(private configService: ConfigService<AppConfig>) {}
 
   async createCollectionCall(collection: CollectionDto): Promise<Extrinsic> {
     try {
-      const { owner, meta } = collection;
+      const { owner, metadata } = collection;
 
       const wsProvider = new WsProvider(this.configService.get("WSS_ENDPOINT"));
       const api = await ApiPromise.create({ provider: wsProvider });
       const collectionId = await nextCollectionId(api);
-      console.log("Next collection id:", collectionId);
+      this.logger.log("Next collection id:", collectionId);
       const calls: SubmittableExtrinsic<"promise">[] = [
         createCollection(api, owner),
       ];
-      if (meta) {
+      if (metadata) {
         calls.push(
-          setCollectionMetadata(api, collectionId, JSON.stringify(meta)),
+          setCollectionMetadata(api, collectionId, metadata.toString()),
         );
       }
       // Create the batched transaction
@@ -75,7 +76,7 @@ export class collectionCreator {
       // Return the batched transaction in a human-readable format
       return batchAllTx;
     } catch (error) {
-      console.error("Error creating collection call", error);
+      this.logger.error("Error creating collection call", error);
       return error;
     }
   }

@@ -45,11 +45,9 @@ async function nextItemId(apiPromise: ApiPromise, collectionID: number) {
 export class nftCreator {
   private readonly logger = new Logger(nftCreator.name);
   constructor(private config: ConfigService<AppConfig>) {}
-  async createNFTcall(collectionID: number, nft: NftDto): Promise<Extrinsic> {
+  async createNFTcall(collectionID: number, meta: NftDto): Promise<Extrinsic> {
     try {
-      const { meta } = nft;
-      const { name, metadata, image, author } = meta;
-      const metad = { name, metadata, image };
+      const { author, metadata } = meta;
       const wsProvider = new WsProvider(this.config.get("WSS_ENDPOINT"));
       const api = await ApiPromise.create({ provider: wsProvider });
 
@@ -59,13 +57,13 @@ export class nftCreator {
       const calls: SubmittableExtrinsic<"promise">[] = [
         createNFT(api, collectionID.toString(), nextNFT.toString(), author),
       ];
-      
+
       calls.push(
         setNFTMetadata(
           api,
           collectionID.toString(),
           nextNFT.toString(),
-          JSON.stringify(metad),
+          JSON.stringify(metadata),
         ),
       );
 

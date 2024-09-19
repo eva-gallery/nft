@@ -33,26 +33,17 @@ export class AppService {
 
   async testCreateNft(): Promise<Extrinsic> {
     const nft: NftDto = {
-      meta: {
-        name: "mockedName",
-        metadata: "mockedDescription",
-        image: "mockedIpfs",
-        author: "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",
-      },
+      metadata: "QmYK58GeYcGMbjjfPDo69jsUU4A8PpLEyPcxBY1yJCSnD1",
+      author: "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",
     };
     const collectionID = 1;
     return await this.nftCreator.createNFTcall(collectionID, nft);
   }
 
   async testCreateCol(): Promise<Extrinsic> {
-    const collectionMeta = {
-      name: "mockedName",
-      metadata: "mockedDescription",
-      image: "mockedIpfs",
-    };
     const collectionDto: CollectionDto = {
       owner: "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",
-      meta: collectionMeta,
+      metadata: "QmYK58GeYcGMbjjfPDo69jsUU4A8PpLEyPcxBY1yJCSnD1",
     };
     return await this.collectionCreator.createCollectionCall(collectionDto);
   }

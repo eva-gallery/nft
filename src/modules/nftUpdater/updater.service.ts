@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import "@polkadot/api-augment";
 import { ConfigService } from "@nestjs/config";
@@ -8,25 +8,26 @@ import { UpdaterDto } from "./dto/UpdaterDto";
 
 @Injectable()
 export class UpdaterCreator {
+  private readonly logger = new Logger(UpdaterCreator.name)
   constructor(private configService: ConfigService<AppConfig>) {}
   async createUpdateCall(
     ids: string,
-    newMetadata: UpdaterDto ,
+    newMetadata: UpdaterDto,
   ): Promise<Extrinsic> {
-    const { meta } = newMetadata;
-    const { name, metadata, image } = meta;
     const wsProvider = new WsProvider(this.configService.get("WSS_ENDPOINT"));
+    this.logger.log(this.configService.get("WSS_ENDPOINT"));
     const api = await ApiPromise.create({ provider: wsProvider });
-
     //Parse ids to collectionId and nftId
     const { collectionId, assetId } = this.parseAssetId(ids);
-
-    const metad = { name, metadata, image }.toString();
     try {
-      const call = api.tx.nfts.setMetadata(collectionId, assetId, metad);
+      const call = api.tx.nfts.setMetadata(
+        collectionId,
+        assetId,
+        newMetadata.toString(),
+      );
       return call;
     } catch (error) {
-      console.error("Error creating update call", error);
+      this.logger.error("Error creating update call", error);
       return error;
     }
   }
@@ -39,20 +40,21 @@ export class UpdaterCreator {
 
     let match = input.match(uniquePattern);
     if (match) {
-        // Handle the "u-" prefix case
-        throw new Error("Updating assets created with Uniques pallet is not supported");
+      // Handle the "u-" prefix case
+      throw new Error(
+        "Updating assets created with Uniques pallet is not supported",
+      );
     }
 
     match = input.match(standardPattern);
     if (match) {
-        // Extract collectionId and assetId from the match result
-        const collectionId = parseInt(match[1], 10);
-        const assetId = parseInt(match[2], 10);
-        return { collectionId, assetId };
+      // Extract collectionId and assetId from the match result
+      const collectionId = parseInt(match[1], 10);
+      const assetId = parseInt(match[2], 10);
+      return { collectionId, assetId };
     }
 
     // If the input does not match any of the patterns, throw an error
     throw new Error("Invalid asset ID format");
-}
-
+  }
 }

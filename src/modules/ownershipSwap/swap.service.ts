@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import "@polkadot/api-augment";
 import { SwapDto } from "./dto/SwapDto";
@@ -8,6 +8,8 @@ import { Extrinsic } from "@polkadot/types/interfaces";
 
 @Injectable()
 export class swapCreator {
+  private readonly logger = new Logger(swapCreator.name)
+
   constructor(private configService: ConfigService<AppConfig>) {}
   async createSwapCall(
     collectionID: number,
@@ -22,7 +24,7 @@ export class swapCreator {
       const call = api.tx.nfts.transfer(collectionID, assetID, address);
       return call;
     } catch (error) {
-      console.error("Error creating swap call", error);
+      this.logger.error("Error creating swap call", error);
       return error;
     }
   }
