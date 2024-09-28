@@ -3,8 +3,7 @@ import { nftCreator } from "./nft.service";
 import { NftDto } from "./dto/NftDto";
 import { FormDataRequest } from "nestjs-form-data";
 
-
-@Controller('collection')
+@Controller("collection")
 export class NftController {
   constructor(private readonly appService: nftCreator) {}
 

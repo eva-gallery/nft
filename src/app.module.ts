@@ -37,7 +37,7 @@ import { TrialCreator } from "@modules/trialmintCreator/trial.service";
     collectionCreator,
     UpdaterCreator,
     collectionMetaService,
-    TrialCreator
+    TrialCreator,
   ],
 })
 export class AppModule {}

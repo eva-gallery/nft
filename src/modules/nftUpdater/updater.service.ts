@@ -9,23 +9,23 @@ import { create } from "ipfs-http-client";
 
 @Injectable()
 export class UpdaterCreator {
-  private readonly logger = new Logger(UpdaterCreator.name)
+  private readonly logger = new Logger(UpdaterCreator.name);
   constructor(private configService: ConfigService<AppConfig>) {}
   async createUpdateCall(
     ids: string,
     newMetadata: UpdaterDto,
   ): Promise<Extrinsic> {
+    const { file, name, metadata } = newMetadata;
 
-    const { file, name, metadata } = newMetadata
-
-    let cid = null
-    let metadataCid = null
+    let cid = null;
+    let metadataCid = null;
 
     const IPFS_NODE_URL = this.configService.get("IPFS_URL");
     const username = this.configService.get("IPFS_NAME");
     const password = this.configService.get("IPFS_PASSWORD");
 
-    const auth = 'Basic ' + Buffer.from(username + ':' + password).toString('base64');
+    const auth =
+      "Basic " + Buffer.from(username + ":" + password).toString("base64");
     const client = create({
       url: IPFS_NODE_URL,
       headers: {
@@ -33,7 +33,11 @@ export class UpdaterCreator {
       },
     });
     cid = await client.add(file.buffer);
-    const meta = JSON.stringify({ "name": name, "image": cid.path, "description": metadata });
+    const meta = JSON.stringify({
+      name: name,
+      image: cid.path,
+      description: metadata,
+    });
 
     metadataCid = await client.add(meta);
 

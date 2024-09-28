@@ -1,5 +1,5 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { MemoryStoredFile, IsFile, HasMimeType } from 'nestjs-form-data';
+import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { MemoryStoredFile, IsFile, HasMimeType } from "nestjs-form-data";
 
 export class CollectionDto {
   @IsNotEmpty()
@@ -7,7 +7,7 @@ export class CollectionDto {
   owner: string;
   @IsFile()
   @IsOptional()
-  @HasMimeType(['image/jpeg', 'image/png'])
+  @HasMimeType(["image/jpeg", "image/png"])
   file: MemoryStoredFile;
   @IsString()
   name: string;

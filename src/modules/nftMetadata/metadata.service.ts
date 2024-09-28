@@ -4,7 +4,7 @@ import { getClient } from "@kodadot1/uniquery";
 
 @Injectable()
 export class metadataService {
-  private readonly logger = new Logger(metadataService.name)
+  private readonly logger = new Logger(metadataService.name);
 
   async getAccountNFTMetadata(address: string): Promise<string> {
     const client = getClient("ahk" as any);

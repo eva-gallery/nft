@@ -3,7 +3,7 @@ import { collectionCreator } from "./collection.service";
 import { CollectionDto } from "./dto/CollectionDto";
 import { FormDataRequest } from "nestjs-form-data";
 
-@Controller('collection')
+@Controller("collection")
 export class CollectionController {
   constructor(private readonly appService: collectionCreator) {}
 

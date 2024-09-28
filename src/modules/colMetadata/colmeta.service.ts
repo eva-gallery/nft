@@ -4,7 +4,7 @@ import { getClient } from "@kodadot1/uniquery";
 
 @Injectable()
 export class collectionMetaService {
-  private readonly logger = new Logger(collectionMetaService.name)
+  private readonly logger = new Logger(collectionMetaService.name);
 
   async getAccountColMetadata(address: string): Promise<string> {
     const client = getClient("ahk" as any);

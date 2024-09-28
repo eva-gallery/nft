@@ -49,25 +49,30 @@ export class nftCreator {
 
   async createNFTcall(collectionID: number, meta: NftDto): Promise<Extrinsic> {
     try {
-      const { owner, file = null, metadata = null, name = null} = meta;
+      const { owner, file = null, metadata = null, name = null } = meta;
 
-      let cid = null
-      let metadataCid = null
+      let cid = null;
+      let metadataCid = null;
 
       const IPFS_NODE_URL = this.configService.get("IPFS_URL");
       const username = this.configService.get("IPFS_NAME");
       const password = this.configService.get("IPFS_PASSWORD");
 
-      const auth = 'Basic ' + Buffer.from(username + ':' + password).toString('base64');
+      const auth =
+        "Basic " + Buffer.from(username + ":" + password).toString("base64");
       const client = create({
         url: IPFS_NODE_URL,
         headers: {
           authorization: auth,
         },
       });
-      
+
       cid = await client.add(file.buffer);
-      const body = JSON.stringify({ "name": name, "image": cid.path, "description": metadata });
+      const body = JSON.stringify({
+        name: name,
+        image: cid.path,
+        description: metadata,
+      });
 
       metadataCid = await client.add(body);
 
@@ -86,7 +91,7 @@ export class nftCreator {
           api,
           collectionID.toString(),
           nextNFT.toString(),
-          metadataCid.path
+          metadataCid.path,
         ),
       );
 

@@ -1,7 +1,7 @@
 import { Controller, Get, Param } from "@nestjs/common";
 import { metadataService } from "./metadata.service";
 
-@Controller('metadata')
+@Controller("metadata")
 export class MetadataController {
   constructor(private readonly appService: metadataService) {}
 

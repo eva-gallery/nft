@@ -52,15 +52,15 @@ async function nextCollectionId(apiPromise: ApiPromise) {
 
 @Injectable()
 export class collectionCreator {
-  private readonly logger = new Logger(collectionCreator.name)
+  private readonly logger = new Logger(collectionCreator.name);
   constructor(private configService: ConfigService<AppConfig>) {}
 
   async createCollectionCall(collection: CollectionDto): Promise<Extrinsic> {
     try {
-      const { owner, file = null, metadata = null, name = null} = collection;
+      const { owner, file = null, metadata = null, name = null } = collection;
 
-      let cid = null
-      let cidMeta = null
+      let cid = null;
+      let cidMeta = null;
       let body = null;
 
       try {
@@ -68,7 +68,8 @@ export class collectionCreator {
         const username = this.configService.get("IPFS_NAME");
         const password = this.configService.get("IPFS_PASSWORD");
 
-        const auth = 'Basic ' + Buffer.from(username + ':' + password).toString('base64');
+        const auth =
+          "Basic " + Buffer.from(username + ":" + password).toString("base64");
         const client = create({
           url: IPFS_NODE_URL,
           headers: {
@@ -77,27 +78,27 @@ export class collectionCreator {
         });
 
         if (file != null) {
-        cid = await client.add(file.buffer);
+          cid = await client.add(file.buffer);
         }
 
         if (cid == null) {
-          body = JSON.stringify({ "name": name, "description": metadata });
-        }
-        else if (metadata == null) {
-          body = JSON.stringify({ "name": name, "image": cid.path });
-        }
-        else if (metadata == null && cid == null) {
-          body = JSON.stringify({ "name": name });
-        }
-        else {
-          body = JSON.stringify({ "name": name, "image": cid.path, "description": metadata });
+          body = JSON.stringify({ name: name, description: metadata });
+        } else if (metadata == null) {
+          body = JSON.stringify({ name: name, image: cid.path });
+        } else if (metadata == null && cid == null) {
+          body = JSON.stringify({ name: name });
+        } else {
+          body = JSON.stringify({
+            name: name,
+            image: cid.path,
+            description: metadata,
+          });
         }
 
-        cidMeta = await client.add(body)
-
+        cidMeta = await client.add(body);
       } catch (error) {
-        this.logger.error('Error adding file to IPFS:', error);
-        throw new Error('Failed to add file to IPFS');
+        this.logger.error("Error adding file to IPFS:", error);
+        throw new Error("Failed to add file to IPFS");
       }
 
       const wsProvider = new WsProvider(this.configService.get("WSS_ENDPOINT"));
@@ -108,9 +109,7 @@ export class collectionCreator {
         createCollection(api, owner),
       ];
       if (metadata) {
-        calls.push(
-          setCollectionMetadata(api, collectionId, cidMeta.path),
-        );
+        calls.push(setCollectionMetadata(api, collectionId, cidMeta.path));
       }
       // Create the batched transaction
       const batchAllTx = api.tx.utility.batchAll(calls);

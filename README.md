@@ -105,8 +105,6 @@ IPFS_URL=http://147.1.1.0
 IPFS_NAME=ipfsnode
 # IPFS node password authentification
 IPFS_PASSWORD=ipfspass
-# Provider for blockchain interaction
-WSS_PROVIDER=wss://kusama-asset-hub-rpc.polkadot.io
 # Eva gallery wallet address
 EVA_GALLERY_WALLET_ADDRESS=DdiySauWxbBeQxUaHzFETA7qhzY53aFiENACtYZQ3Cno127
 ```

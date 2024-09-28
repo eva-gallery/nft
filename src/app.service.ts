@@ -10,12 +10,11 @@ import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class AppService {
-  constructor(
-    // private readonly swapCreator: swapCreator,
-    // private readonly metadataService: metadataService,
-    // private readonly nftCreator: nftCreator,
-    // private readonly collectionCreator: collectionCreator,
-  ) {}
+  constructor() // private readonly swapCreator: swapCreator,
+  // private readonly metadataService: metadataService,
+  // private readonly nftCreator: nftCreator,
+  // private readonly collectionCreator: collectionCreator,
+  {}
 
   // async testCreateSwapCall(): Promise<Extrinsic> {
   //   const nft: SwapDto = {
