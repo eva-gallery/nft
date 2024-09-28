@@ -6,6 +6,7 @@ import { CollectionDto } from "./dto/CollectionDto";
 import { ConfigService } from "@nestjs/config";
 import { AppConfig } from "@common/config";
 import { Extrinsic } from "@polkadot/types/interfaces";
+import { create } from "ipfs-http-client";
 
 function createArgsForNftPallet(
   account: string,
@@ -56,7 +57,48 @@ export class collectionCreator {
 
   async createCollectionCall(collection: CollectionDto): Promise<Extrinsic> {
     try {
-      const { owner, metadata } = collection;
+      const { owner, file = null, metadata = null, name = null} = collection;
+
+      let cid = null
+      let cidMeta = null
+      let body = null;
+
+      try {
+        const IPFS_NODE_URL = this.configService.get("IPFS_URL");
+        const username = this.configService.get("IPFS_NAME");
+        const password = this.configService.get("IPFS_PASSWORD");
+
+        const auth = 'Basic ' + Buffer.from(username + ':' + password).toString('base64');
+        const client = create({
+          url: IPFS_NODE_URL,
+          headers: {
+            authorization: auth,
+          },
+        });
+
+        if (file != null) {
+        cid = await client.add(file.buffer);
+        }
+
+        if (cid == null) {
+          body = JSON.stringify({ "name": name, "description": metadata });
+        }
+        else if (metadata == null) {
+          body = JSON.stringify({ "name": name, "image": cid.path });
+        }
+        else if (metadata == null && cid == null) {
+          body = JSON.stringify({ "name": name });
+        }
+        else {
+          body = JSON.stringify({ "name": name, "image": cid.path, "description": metadata });
+        }
+
+        cidMeta = await client.add(body)
+
+      } catch (error) {
+        this.logger.error('Error adding file to IPFS:', error);
+        throw new Error('Failed to add file to IPFS');
+      }
 
       const wsProvider = new WsProvider(this.configService.get("WSS_ENDPOINT"));
       const api = await ApiPromise.create({ provider: wsProvider });
@@ -67,7 +109,7 @@ export class collectionCreator {
       ];
       if (metadata) {
         calls.push(
-          setCollectionMetadata(api, collectionId, metadata.toString()),
+          setCollectionMetadata(api, collectionId, cidMeta.path),
         );
       }
       // Create the batched transaction

@@ -6,6 +6,7 @@ import { NftDto } from "./dto/NftDto";
 import { ConfigService } from "@nestjs/config";
 import { AppConfig } from "@common/config";
 import { Extrinsic } from "@polkadot/types/interfaces";
+import { create } from "ipfs-http-client";
 
 const createNFT = (
   api: ApiPromise,
@@ -44,18 +45,40 @@ async function nextItemId(apiPromise: ApiPromise, collectionID: number) {
 @Injectable()
 export class nftCreator {
   private readonly logger = new Logger(nftCreator.name);
-  constructor(private config: ConfigService<AppConfig>) {}
+  constructor(private configService: ConfigService<AppConfig>) {}
+
   async createNFTcall(collectionID: number, meta: NftDto): Promise<Extrinsic> {
     try {
-      const { author, metadata } = meta;
-      const wsProvider = new WsProvider(this.config.get("WSS_ENDPOINT"));
+      const { owner, file = null, metadata = null, name = null} = meta;
+
+      let cid = null
+      let metadataCid = null
+
+      const IPFS_NODE_URL = this.configService.get("IPFS_URL");
+      const username = this.configService.get("IPFS_NAME");
+      const password = this.configService.get("IPFS_PASSWORD");
+
+      const auth = 'Basic ' + Buffer.from(username + ':' + password).toString('base64');
+      const client = create({
+        url: IPFS_NODE_URL,
+        headers: {
+          authorization: auth,
+        },
+      });
+      
+      cid = await client.add(file.buffer);
+      const body = JSON.stringify({ "name": name, "image": cid.path, "description": metadata });
+
+      metadataCid = await client.add(body);
+
+      const wsProvider = new WsProvider(this.configService.get("WSS_ENDPOINT"));
       const api = await ApiPromise.create({ provider: wsProvider });
 
       const nextNFT = await nextItemId(api, collectionID);
       this.logger.log("Next nft id:", nextNFT);
 
       const calls: SubmittableExtrinsic<"promise">[] = [
-        createNFT(api, collectionID.toString(), nextNFT.toString(), author),
+        createNFT(api, collectionID.toString(), nextNFT.toString(), owner),
       ];
 
       calls.push(
@@ -63,7 +86,7 @@ export class nftCreator {
           api,
           collectionID.toString(),
           nextNFT.toString(),
-          metadata.toString(),
+          metadataCid.path
         ),
       );
 

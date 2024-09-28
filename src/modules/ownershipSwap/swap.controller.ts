@@ -1,4 +1,4 @@
-import { Controller, Body, Post, Param } from "@nestjs/common";
+import { Controller, Body, Post, Param, Get } from "@nestjs/common";
 import { swapCreator } from "./swap.service";
 import { SwapDto } from "./dto/SwapDto";
 
@@ -13,5 +13,10 @@ export class SwapController {
     @Param("asset") asset: number,
   ) {
     return this.appService.createSwapCall(collection, asset, swapDto);
+  }
+
+  @Get("pay/:address")
+  getPay(@Param("address") address: string) {
+    return this.appService.getPayCall(address);
   }
 }

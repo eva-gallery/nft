@@ -84,10 +84,29 @@ Which when decoded turns into the following BATCH of calls to create NFT:
 npm run test:e2e
 
 ## .env
+
+```
 .env example
-
+#APP STARTUP PORT
 PORT=3000
-
+#BACKEND URL
 BACKEND_URL=http://localhost:4200
-
+# WSS_ENDPOIINT for intracting with blockchain
 WSS_ENDPOINT=wss://sys.dotters.network/statemine
+# Secret 12/24 word phrase for wallet that will do trialmint
+WALLET_SECRET_KEY= bla bla bla bla bla bla bla bla bla bla bla bla;
+# URL for NFT MODULE
+NFT_MODULE_URL=http://localhost:3000
+# Hardcoded collection ID that will be used for trial mint
+EVA_GALLERY_COLLECTION=1;
+# IPFS node URL address
+IPFS_URL=http://147.1.1.0
+# IPFS node user name authentification
+IPFS_NAME=ipfsnode
+# IPFS node password authentification
+IPFS_PASSWORD=ipfspass
+# Provider for blockchain interaction
+WSS_PROVIDER=wss://kusama-asset-hub-rpc.polkadot.io
+# Eva gallery wallet address
+EVA_GALLERY_WALLET_ADDRESS=DdiySauWxbBeQxUaHzFETA7qhzY53aFiENACtYZQ3Cno127
+```

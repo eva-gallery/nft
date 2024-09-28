@@ -12,8 +12,10 @@ import { nftCreator } from "@modules/nftMinter/nft.service";
 import { collectionCreator } from "@modules/collectionCreator/collection.service";
 import { UpdaterCreator } from "@modules/nftUpdater/updater.service";
 import { UpdateModule } from "@modules/nftUpdater/updater.module";
-import { CollectionMetaModule } from "@modules/colMetadata/collection.module";
-import { collectionMetaService } from "@modules/colMetadata/collection.service";
+import { CollectionMetaModule } from "@modules/colMetadata/colmeta.module";
+import { collectionMetaService } from "@modules/colMetadata/colmeta.service";
+import { TrialModule } from "@modules/trialmintCreator/trial.module";
+import { TrialCreator } from "@modules/trialmintCreator/trial.service";
 
 @Module({
   imports: [
@@ -24,6 +26,7 @@ import { collectionMetaService } from "@modules/colMetadata/collection.service";
     SwapModule,
     UpdateModule,
     CollectionMetaModule,
+    TrialModule,
   ],
   controllers: [AppController],
   providers: [
@@ -34,6 +37,7 @@ import { collectionMetaService } from "@modules/colMetadata/collection.service";
     collectionCreator,
     UpdaterCreator,
     collectionMetaService,
+    TrialCreator
   ],
 })
 export class AppModule {}

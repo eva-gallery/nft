@@ -31,6 +31,8 @@
     "@polkadot/util": "^12.6.2",
     "class-transformer": "^0.5.1",
     "cors": "^2.8.5",
+    "nestjs-form-data": "^1.9.91",
+    "ipfs-http-client": "^56.0.2",
     "reflect-metadata": "^0.2.1",
     "rxjs": "^7.8.1"
   },

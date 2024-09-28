@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
-import { CollectionMetaController } from "./collection.controller";
-import { collectionMetaService } from "./collection.service";
+import { CollectionMetaController } from "./colmeta.controller";
+import { collectionMetaService } from "./colmeta.service";
 
 @Module({
   imports: [],

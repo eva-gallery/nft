@@ -1,11 +1,11 @@
 import { Controller, Get, Param } from "@nestjs/common";
-import { collectionMetaService } from "./collection.service";
+import { collectionMetaService } from "./colmeta.service";
 
-@Controller('collection')
+@Controller('metadata')
 export class CollectionMetaController {
   constructor(private readonly appService: collectionMetaService) {}
 
-  @Get("address/:address")
+  @Get("collection/address/:address")
   getAccountNFTs(@Param("address") address: string) {
     return this.appService.getAccountColMetadata(address);
   }

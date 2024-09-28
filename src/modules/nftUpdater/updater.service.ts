@@ -5,6 +5,7 @@ import { ConfigService } from "@nestjs/config";
 import { AppConfig } from "@common/config";
 import { Extrinsic } from "@polkadot/types/interfaces";
 import { UpdaterDto } from "./dto/UpdaterDto";
+import { create } from "ipfs-http-client";
 
 @Injectable()
 export class UpdaterCreator {
@@ -14,6 +15,28 @@ export class UpdaterCreator {
     ids: string,
     newMetadata: UpdaterDto,
   ): Promise<Extrinsic> {
+
+    const { file, name, metadata } = newMetadata
+
+    let cid = null
+    let metadataCid = null
+
+    const IPFS_NODE_URL = this.configService.get("IPFS_URL");
+    const username = this.configService.get("IPFS_NAME");
+    const password = this.configService.get("IPFS_PASSWORD");
+
+    const auth = 'Basic ' + Buffer.from(username + ':' + password).toString('base64');
+    const client = create({
+      url: IPFS_NODE_URL,
+      headers: {
+        authorization: auth,
+      },
+    });
+    cid = await client.add(file.buffer);
+    const meta = JSON.stringify({ "name": name, "image": cid.path, "description": metadata });
+
+    metadataCid = await client.add(meta);
+
     const wsProvider = new WsProvider(this.configService.get("WSS_ENDPOINT"));
     this.logger.log(this.configService.get("WSS_ENDPOINT"));
     const api = await ApiPromise.create({ provider: wsProvider });
@@ -23,7 +46,7 @@ export class UpdaterCreator {
       const call = api.tx.nfts.setMetadata(
         collectionId,
         assetId,
-        newMetadata.toString(),
+        metadataCid.path,
       );
       return call;
     } catch (error) {
