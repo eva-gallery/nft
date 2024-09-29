@@ -16,6 +16,8 @@ import { CollectionMetaModule } from "@modules/colMetadata/colmeta.module";
 import { collectionMetaService } from "@modules/colMetadata/colmeta.service";
 import { TrialModule } from "@modules/trialmintCreator/trial.module";
 import { TrialCreator } from "@modules/trialmintCreator/trial.service";
+import { TransactionModule } from "@common/utils.module";
+import { TransactionService } from "@common/utils";
 
 @Module({
   imports: [
@@ -27,6 +29,7 @@ import { TrialCreator } from "@modules/trialmintCreator/trial.service";
     UpdateModule,
     CollectionMetaModule,
     TrialModule,
+    TransactionModule,
   ],
   controllers: [AppController],
   providers: [
@@ -38,6 +41,7 @@ import { TrialCreator } from "@modules/trialmintCreator/trial.service";
     UpdaterCreator,
     collectionMetaService,
     TrialCreator,
+    TransactionService,
   ],
 })
 export class AppModule {}

@@ -3,15 +3,16 @@ import "@polkadot/api-augment";
 import { ConfigService } from "@nestjs/config";
 import { AppConfig } from "@common/config";
 import { TrialDto } from "./dto/TrialDto";
-import { ApiPromise, Keyring, WsProvider } from "@polkadot/api";
+import { ApiPromise, WsProvider } from "@polkadot/api";
 import { create } from "ipfs-http-client";
 import { nftCreator } from "@modules/nftMinter/nft.service";
+import { TransactionService } from "@common/utils";
 
 @Injectable()
 export class TrialCreator {
+  private readonly transactionService: TransactionService;
   private readonly logger = new Logger(TrialCreator.name);
   private nftCreatorInstance: nftCreator;
-
   constructor(private configService: ConfigService<AppConfig>) {
     this.nftCreatorInstance = new nftCreator(configService);
   }
@@ -65,39 +66,14 @@ export class TrialCreator {
     const parsedResponse = JSON.parse(nftTx); // Convert the string to a JSON object
     const nftID: string = parsedResponse[0].args.item;
 
-    // Create wallet instance
-    const wallet = new Keyring({ type: "sr25519" });
-    const secretKey = this.configService.get("WALLET_SECRET_KEY");
-    const EvaGallerySigner = wallet.addFromUri(secretKey);
-
-    // Sign and send the transaction, subscribe to the status of the transaction
-    return new Promise<string>((resolve, reject) => {
-      api
-        .tx(call)
-        .signAndSend(EvaGallerySigner, async ({ status, dispatchError }) => {
-          if (status.isFinalized) {
-            if (dispatchError) {
-              if (dispatchError.isModule) {
-                const decoded = api.registry.findMetaError(
-                  dispatchError.asModule,
-                );
-                const { docs, name, section } = decoded;
-                reject(new Error(`${section}.${name}: ${docs.join(" ")}`));
-              } else {
-                reject(new Error(dispatchError.toString()));
-              }
-            } else {
-              // No dispatch error, transaction is successful
-              resolve(
-                JSON.stringify({
-                  nftID,
-                  metadataPath: metadataCid.path,
-                  cidPath: cid.path,
-                }),
-              );
-            }
-          }
-        });
-    });
+    // Use the new signAndSendTransaction function
+    return this.transactionService.signAndSendTransaction(
+      api,
+      nftTX,
+      "mint",
+      nftID,
+      metadataCid.path,
+      cid.path,
+    );
   }
 }

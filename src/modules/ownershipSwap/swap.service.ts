@@ -5,13 +5,16 @@ import { ConfigService } from "@nestjs/config";
 import { AppConfig } from "@common/config";
 import { Extrinsic } from "@polkadot/types/interfaces";
 import "@polkadot/api-augment";
-import { ApiPromise, Keyring, WsProvider } from "@polkadot/api";
+import { ApiPromise, WsProvider } from "@polkadot/api";
+import { TransactionService } from "@common/utils";
 
 @Injectable()
 export class swapCreator {
   private readonly logger = new Logger(swapCreator.name);
 
-  constructor(private configService: ConfigService<AppConfig>) {}
+  constructor(private configService: ConfigService<AppConfig>,
+    private readonly transactionService: TransactionService,
+  ) {}
   async createSwapCall(
     collectionID: number,
     assetID: number,
@@ -24,40 +27,12 @@ export class swapCreator {
     try {
       const call = api.tx.nfts.transfer(collectionID, assetID, address);
 
-      // Create wallet instance
-      const wallet = new Keyring({ type: "sr25519" });
-      const secretKey = this.configService.get("WALLET_SECRET_KEY");
-      const EvaGallerySigner = wallet.addFromUri(secretKey);
-
-      // Sign and send the transaction, subscribe to the status of the transaction
-      return new Promise<string>((resolve, reject) => {
-        api
-          .tx(call)
-          .signAndSend(
-            EvaGallerySigner,
-            async ({ txHash, status, dispatchError }) => {
-              if (status.isFinalized) {
-                if (dispatchError) {
-                  if (dispatchError.isModule) {
-                    const decoded = api.registry.findMetaError(
-                      dispatchError.asModule,
-                    );
-                    const { docs, name, section } = decoded;
-                    reject(new Error(`${section}.${name}: ${docs.join(" ")}`));
-                  } else {
-                    reject(new Error(dispatchError.toString()));
-                  }
-                } else {
-                  // No dispatch error, transaction is successful
-                  resolve(txHash.toString());
-                }
-              }
-            },
-          );
-      });
+      // Use the new signAndSendTransaction function
+      const txHash = await this.transactionService.signAndSendTransaction(api, call, "swap");
+      return txHash;
     } catch (error) {
       this.logger.error("Error creating swap call", error);
-      return error;
+      throw new Error("Error creating swap call");
     }
   }
 

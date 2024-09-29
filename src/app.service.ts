@@ -10,9 +10,7 @@ import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class AppService {
-  constructor() // private readonly swapCreator: swapCreator,
-  // private readonly metadataService: metadataService,
-  // private readonly nftCreator: nftCreator,
+  constructor() // private readonly nftCreator: nftCreator, // private readonly metadataService: metadataService, // private readonly swapCreator: swapCreator,
   // private readonly collectionCreator: collectionCreator,
   {}
 
