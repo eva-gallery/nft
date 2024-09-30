@@ -67,13 +67,17 @@ export class TrialCreator {
     const nftID: string = parsedResponse[0].args.item;
 
     // Use the new signAndSendTransaction function
-    return this.transactionService.signAndSendTransaction(
+    const hashResponse = await this.transactionService.signAndSendTransaction(
       api,
       nftTX,
-      "mint",
-      nftID,
-      metadataCid.path,
-      cid.path,
     );
+    
+    if (hashResponse != null) {
+      return JSON.stringify({
+        nftID,
+        metadataCid: metadataCid.path,
+        cid: cid.path,
+      })    
+    }
   }
 }

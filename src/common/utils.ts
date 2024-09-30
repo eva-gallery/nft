@@ -11,10 +11,6 @@ export class TransactionService {
   public async signAndSendTransaction(
     api: ApiPromise,
     call: SubmittableExtrinsic<'promise'>,
-    usecase: string,
-    nftID?: string,
-    metadataCid?: string,
-    cid?: string
   ): Promise<string> {
     const secretKey = this.configService.get<string>('WALLET_SECRET_KEY');
     const wallet = new Keyring({ type: 'sr25519' });
@@ -32,17 +28,7 @@ export class TransactionService {
               reject(new Error(dispatchError.toString()));
             }
           } else {
-            if (usecase === 'swap') {
               resolve(txHash.toString());
-            } else if (usecase === 'mint') {
-              resolve(
-                JSON.stringify({
-                  nftID,
-                  metadataPath: metadataCid,
-                  cidPath: cid,
-                })
-              );
-            }
           }
         }
       });
