@@ -18,6 +18,8 @@ import { TrialModule } from "@modules/trialmintCreator/trial.module";
 import { TrialCreator } from "@modules/trialmintCreator/trial.service";
 import { TransactionModule } from "@common/utils.module";
 import { TransactionService } from "@common/utils";
+import { EvaModule } from "@modules/evaDetails/eva.module";
+import { EvaService } from "@modules/evaDetails/eva.service";
 
 @Module({
   imports: [
@@ -30,6 +32,7 @@ import { TransactionService } from "@common/utils";
     CollectionMetaModule,
     TrialModule,
     TransactionModule,
+    EvaModule,
   ],
   controllers: [AppController],
   providers: [
@@ -42,6 +45,7 @@ import { TransactionService } from "@common/utils";
     collectionMetaService,
     TrialCreator,
     TransactionService,
+    EvaService,
   ],
 })
 export class AppModule {}

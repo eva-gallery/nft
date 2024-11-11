@@ -18,7 +18,7 @@ PORT=3000
 BACKEND_URL=http://localhost:4200
 # WSS_ENDPOIINT for intracting with blockchain
 WSS_ENDPOINT=wss://sys.dotters.network/statemine
-# Secret 12/24 word phrase for wallet that will do trialmint
+# Secret 12/24 word phrase / Wallet private key for wallet that will do trialmint
 WALLET_SECRET_KEY= bla bla bla bla bla bla bla bla bla bla bla bla;
 # URL for NFT MODULE
 NFT_MODULE_URL=http://localhost:3000
