@@ -15,7 +15,6 @@ export class TransactionService {
     const secretKey = this.configService.get<string>('WALLET_SECRET_KEY');
     const wallet = new Keyring({ type: 'sr25519' });
     const EvaGallerySigner = wallet.addFromUri(secretKey);
-
     return new Promise<string>((resolve, reject) => {
       call.signAndSend(EvaGallerySigner, async ({ txHash, status, dispatchError }) => {
         if (status.isFinalized) {

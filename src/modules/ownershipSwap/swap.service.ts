@@ -26,7 +26,7 @@ export class swapCreator {
 
     try {
       const call = api.tx.nfts.transfer(collectionID, assetID, address);
-
+      console.log(assetID, collectionID, address);
       // Use the new signAndSendTransaction function
       const txHash = await this.transactionService.signAndSendTransaction(api, call);
       return txHash;

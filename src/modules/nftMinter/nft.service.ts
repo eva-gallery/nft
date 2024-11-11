@@ -32,7 +32,6 @@ async function nextItemId(apiPromise: ApiPromise, collectionID: number) {
   try {
     const api = apiPromise;
     const result = await api.query.nfts.collection(collectionID.toString());
-
     const itemsList = result.unwrap();
     const nextItemId = itemsList.items.toNumber();
     return nextItemId + 1;
@@ -81,7 +80,6 @@ export class nftCreator {
 
       const nextNFT = await nextItemId(api, collectionID);
       this.logger.log("Next nft id:", nextNFT);
-
       const calls: SubmittableExtrinsic<"promise">[] = [
         createNFT(api, collectionID.toString(), nextNFT.toString(), owner),
       ];
@@ -101,7 +99,7 @@ export class nftCreator {
       // Return the batched transaction in a human-readable format
       return batchAllTx;
     } catch (error) {
-      this.logger.error("Error creating swap call", error);
+      this.logger.error("Error creating NFT call", error);
       return error;
     }
   }
