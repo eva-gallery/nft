@@ -7,6 +7,7 @@ import { ApiPromise, WsProvider } from "@polkadot/api";
 import { nftCreator } from "@modules/nftMinter/nft.service";
 import { TransactionService } from "@common/utils";
 import { NftDto } from "@modules/nftMinter/dto/NftDto";
+import { Keyring } from '@polkadot/api';
 
 @Injectable()
 export class TrialCreator {
@@ -28,10 +29,14 @@ export class TrialCreator {
       const api = await ApiPromise.create({ provider: wsProvider });
 
       const collectionID = this.configService.get("EVA_GALLERY_COLLECTION");
+      const secret = this.configService.get("WALLET_SECRET_KEY");
+      const keyring = new Keyring({ type: 'sr25519' });
+  
+      const eva = keyring.addFromUri(secret);
 
       //Create NFT DTO
       const nft: NftDto = {
-        owner: this.configService.get("EVA_GALLERY_WALLET_ADDRESS"),
+        owner: eva.address,
         metadata: metadata,
         name: name,
         file: file,

@@ -7,5 +7,4 @@ export interface AppConfig {
   IPFS_PASSWORD: string;
   WALLET_SECRET_KEY: string;
   EVA_GALLERY_COLLECTION: string;
-  EVA_GALLERY_WALLET_ADDRESS: string;
 }
