@@ -5,6 +5,16 @@ import { AppService } from "./app.service";
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Get("healthyz")
+  healthyz(): string {
+    return "OK";
+  }
+
+  @Get("readyz")
+  readyz(): string {
+    return "OK";
+  }
+
   // @Get("test-create-swap")
   // async testCreateSwap() {
   //   return await this.appService.testCreateSwapCall();
