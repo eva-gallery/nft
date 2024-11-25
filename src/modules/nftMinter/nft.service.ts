@@ -67,10 +67,15 @@ export class nftCreator {
       });
 
       cid = await client.add(file.buffer);
+
       const body = JSON.stringify({
         name: name,
-        image: cid.path,
         description: metadata,
+        image: "ipfs://ipfs/" + cid.path,
+        animation_url: "",
+        attributes: [],
+        external_url: "",
+        type: file.mimetype,
       });
 
       metadataCid = await client.add(body);
@@ -89,7 +94,7 @@ export class nftCreator {
           api,
           collectionID.toString(),
           nextNFT.toString(),
-          metadataCid.path,
+          "ipfs://ipfs/" + metadataCid.path,
         ),
       );
 

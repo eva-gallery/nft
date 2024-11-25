@@ -13,7 +13,7 @@ export class EvaService {
     const keyring = new Keyring({ type: 'sr25519' });
 
     const eva = keyring.addFromUri(secret);
-    return eva.address;
+    return keyring.encodeAddress(eva.address, 2);
   }
 
   getEvaCollection(): string {
