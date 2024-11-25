@@ -46,12 +46,12 @@ export class TrialCreator {
         collectionID,
         nft,
       );
-
+      
       // Deconstruct hex encoded response clone to get NFT (aka ItemID)
       const nftTX = api.tx(call);
-      const nftTx = await nftTX.args.toString();
-      const parsedResponse = JSON.parse(nftTx); // Convert the string to a JSON object
-      const nftID: string = parsedResponse[0].args.item;
+      const nftTXargs = nftTX.args[0].toHuman();
+      const nftID = nftTXargs[1].args.item;
+      const nftData = nftTXargs[1].args.data;
 
       // Use the new signAndSendTransaction function
       const hashResponse = await this.transactionService.signAndSendTransaction(
@@ -62,6 +62,7 @@ export class TrialCreator {
       if (hashResponse != null) {
         return JSON.stringify({
           nftID,
+          metadataCid: nftData,
         })    
       }
     }
