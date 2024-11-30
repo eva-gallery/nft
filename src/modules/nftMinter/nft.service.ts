@@ -7,6 +7,7 @@ import { ConfigService } from "@nestjs/config";
 import { AppConfig } from "@common/config";
 import { Extrinsic } from "@polkadot/types/interfaces";
 import { create } from "ipfs-http-client";
+import { parseAssetId } from "@modules/nftUpdater/updater.service";
 
 const createNFT = (
   api: ApiPromise,
@@ -31,10 +32,21 @@ const setNFTMetadata = (
 async function nextItemId(apiPromise: ApiPromise, collectionID: number) {
   try {
     const api = apiPromise;
-    const result = await api.query.nfts.collection(collectionID.toString());
-    const itemsList = result.unwrap();
-    const nextItemId = itemsList.items.toNumber();
-    return nextItemId + 1;
+    let nextItemId = 0;
+
+    const items = await api.query.nfts.item.entries(collectionID.toString());
+    const formattedItems = items.map(([key, value]) => {
+      const itemId = key.args.map(arg => arg.toHuman());
+      const itemDetails = value.unwrap().toHuman();
+      return [itemId, itemDetails];
+    });
+    
+    // Ensure the next item id does not already exist
+    while (formattedItems.some(item => item[0][1] === nextItemId.toString())) {
+      nextItemId += 1;
+    }
+
+    return nextItemId;
   } catch (error) {
     this.logger.error("Error getting NFT id", error);
     return 1;
@@ -105,6 +117,20 @@ export class nftCreator {
       return batchAllTx;
     } catch (error) {
       this.logger.error("Error creating NFT call", error);
+      return error;
+    }
+  }
+
+  async removeNFTcall(ids: string): Promise<Extrinsic> {
+    const wsProvider = new WsProvider(this.configService.get("WSS_ENDPOINT"));
+    const api = await ApiPromise.create({ provider: wsProvider });
+
+    const { collectionId, assetId } = parseAssetId(ids);
+    try {
+      const call = api.tx.nfts.burn(collectionId, assetId);
+      return call;
+    } catch (error) {
+      this.logger.error("Error creating remove call", error);
       return error;
     }
   }

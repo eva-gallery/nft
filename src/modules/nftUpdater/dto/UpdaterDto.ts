@@ -1,11 +1,12 @@
 import { IsNotEmpty, IsString } from "class-validator";
-import { MemoryStoredFile, IsFile, HasMimeType } from "nestjs-form-data";
 
 export class UpdaterDto {
   @IsNotEmpty()
-  @IsFile()
-  @HasMimeType(["image/jpeg", "image/png"])
-  file: MemoryStoredFile;
+  @IsString()
+  imgType: string;
+  @IsNotEmpty()
+  @IsString()
+  imgIpfs: string;
   @IsNotEmpty()
   @IsString()
   name: string;
