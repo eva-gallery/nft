@@ -1,32 +1,32 @@
 import { Injectable } from "@nestjs/common";
-import { swapCreator } from "@modules/ownershipSwap/swap.service";
 import { SwapDto } from "@modules/ownershipSwap/dto/SwapDto";
 import { Extrinsic } from "@polkadot/types/interfaces";
-import { metadataService } from "@modules/nftMetadata/metadata.service";
-import { nftCreator } from "@modules/nftMinter/nft.service";
 import { NftDto } from "@modules/nftMinter/dto/NftDto";
 import { CollectionDto } from "@modules/collectionCreator/dto/CollectionDto";
 import { collectionCreator } from "@modules/collectionCreator/collection.service";
+import { swapCreator } from "@modules/ownershipSwap/swap.service";
+import { metadataService } from "@modules/nftMetadata/metadata.service";
+import { nftCreator } from "@modules/nftMinter/nft.service";
 
 @Injectable()
 export class AppService {
   constructor(
-    private readonly nftCreator: nftCreator,
-    private readonly metadataService: metadataService,
-    private readonly swapCreator: swapCreator,
-    private readonly collectionCreator: collectionCreator
+    private readonly NftCreator: nftCreator,
+    private readonly MetadataService: metadataService,
+    private readonly SwapCreator: swapCreator,
+    private readonly CollectionCreator: collectionCreator
   ) {}
 
    async testCreateSwapCall(): Promise<Extrinsic> {
      const nft: SwapDto = {
        address: "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",
      };
-     return this.swapCreator.getPayCall(nft.address);
+     return this.SwapCreator.getPayCall(nft.address);
    }
 
    async testQueryMetadata(): Promise<string> {
      const address = "EZwaNLfEwAMYcEdbp7uKYFCjnsn43S85pm6BumT5UwvZQvB";
-    return this.metadataService.getAccountNFTMetadata(address);
+    return this.MetadataService.getAccountNFTMetadata(address);
    }
 
    async testCreateNft(): Promise<Extrinsic> {
@@ -39,7 +39,7 @@ export class AppService {
      };
 
      const collectionID = 1;
-    return this.nftCreator.createNFTcall(collectionID, nft);
+    return this.NftCreator.createNFTcall(collectionID, nft);
    }
 
    async testCreateCol(): Promise<Extrinsic> {
@@ -50,6 +50,6 @@ export class AppService {
       file: null,
 
      };
-     return this.collectionCreator.createCollectionCall(collectionDto);
+     return this.CollectionCreator.createCollectionCall(collectionDto);
    }
 }
