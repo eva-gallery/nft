@@ -15,23 +15,23 @@ export class AppController {
     return "OK";
   }
 
-  // @Get("test-create-swap")
-  // async testCreateSwap() {
-  //   return await this.appService.testCreateSwapCall();
-  // }
+  @Get("test-create-swap")
+   async testCreateSwap() {
+     return await this.appService.testCreateSwapCall();
+   }
 
-  // @Get("test-query-metadata")
-  // async testQueryMetadata() {
-  //   return await this.appService.testQueryMetadata();
-  // }
+   @Get("test-query-metadata")
+   async testQueryMetadata() {
+    return await this.appService.testQueryMetadata();
+   }
 
-  // @Get("test-create-nft")
-  // async testCreateNFT() {
-  //   return await this.appService.testCreateNft();
-  // }
+   @Get("test-create-nft")
+   async testCreateNFT() {
+     return await this.appService.testCreateNft();
+   }
 
-  // @Get("test-create-collection")
-  // async testCreateCol() {
-  //   return await this.appService.testCreateCol();
-  // }
+   @Get("test-create-collection")
+   async testCreateCol() {
+     return await this.appService.testCreateCol();
+   }
 }

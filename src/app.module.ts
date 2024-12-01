@@ -17,7 +17,6 @@ import { collectionMetaService } from "@modules/colMetadata/colmeta.service";
 import { TrialModule } from "@modules/trialmintCreator/trial.module";
 import { TrialCreator } from "@modules/trialmintCreator/trial.service";
 import { TransactionModule } from "@common/utils.module";
-import { TransactionService } from "@common/utils";
 import { EvaModule } from "@modules/evaDetails/eva.module";
 import { EvaService } from "@modules/evaDetails/eva.service";
 
@@ -44,7 +43,6 @@ import { EvaService } from "@modules/evaDetails/eva.service";
     UpdaterCreator,
     collectionMetaService,
     TrialCreator,
-    TransactionService,
     EvaService,
   ],
 })
