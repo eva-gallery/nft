@@ -1,48 +1,55 @@
 import { Injectable } from "@nestjs/common";
-// import { swapCreator } from "@modules/ownershipSwap/swap.service";
-// import { SwapDto } from "@modules/ownershipSwap/dto/SwapDto";
-// import { Extrinsic } from "@polkadot/types/interfaces";
-// import { metadataService } from "@modules/nftMetadata/metadata.service";
-// import { nftCreator } from "@modules/nftMinter/nft.service";
-// import { NftDto } from "@modules/nftMinter/dto/NftDto";
-// import { CollectionDto } from "@modules/collectionCreator/dto/CollectionDto";
-// import { collectionCreator } from "@modules/collectionCreator/collection.service";
+import { SwapDto } from "@modules/ownershipSwap/dto/SwapDto";
+import { Extrinsic } from "@polkadot/types/interfaces";
+import { NftDto } from "@modules/nftMinter/dto/NftDto";
+import { CollectionDto } from "@modules/collectionCreator/dto/CollectionDto";
+import { collectionCreator } from "@modules/collectionCreator/collection.service";
+import { swapCreator } from "@modules/ownershipSwap/swap.service";
+import { metadataService } from "@modules/nftMetadata/metadata.service";
+import { nftCreator } from "@modules/nftMinter/nft.service";
 
 @Injectable()
 export class AppService {
-  constructor() // private readonly nftCreator: nftCreator, // private readonly metadataService: metadataService, // private readonly swapCreator: swapCreator,
-  // private readonly collectionCreator: collectionCreator,
-  {}
+  constructor(
+    private readonly NftCreator: nftCreator,
+    private readonly MetadataService: metadataService,
+    private readonly SwapCreator: swapCreator,
+    private readonly CollectionCreator: collectionCreator
+  ) {}
 
-  // async testCreateSwapCall(): Promise<Extrinsic> {
-  //   const nft: SwapDto = {
-  //     address: "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",
-  //   };
-  //   const collectionID = 1;
-  //   const assetID = 1;
-  //   return await this.swapCreator.createSwapCall(collectionID, assetID, nft);
-  // }
+   async testCreateSwapCall(): Promise<Extrinsic> {
+     const nft: SwapDto = {
+       address: "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",
+     };
+     return this.SwapCreator.getPayCall(nft.address);
+   }
 
-  // async testQueryMetadata(): Promise<string> {
-  //   const address = "EZwaNLfEwAMYcEdbp7uKYFCjnsn43S85pm6BumT5UwvZQvB";
-  //   return await this.metadataService.getAccountNFTMetadata(address);
-  // }
+   async testQueryMetadata(): Promise<string> {
+     const address = "EZwaNLfEwAMYcEdbp7uKYFCjnsn43S85pm6BumT5UwvZQvB";
+    return this.MetadataService.getAccountNFTMetadata(address);
+   }
 
-  // async testCreateNft(): Promise<Extrinsic> {
-  //   const nft: NftDto = {
-  //     metadata: "QmYK58GeYcGMbjjfPDo69jsUU4A8PpLEyPcxBY1yJCSnD1",
-  //     author: "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",
-  //   };
-  //   const collectionID = 1;
-  //   return await this.nftCreator.createNFTcall(collectionID, nft);
-  // }
+   async testCreateNft(): Promise<Extrinsic> {
+      
+     const nft: NftDto = {
+       name: "Test NFT",
+       metadata: "Meta",
+       owner: "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",
+       file: null,
+     };
 
-  // async testCreateCol(): Promise<Extrinsic> {
-  //   const collectionDto: CollectionDto = {
-  //     owner: "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",
-  //     metadata: "QmYK58GeYcGMbjjfPDo69jsUU4A8PpLEyPcxBY1yJCSnD1",
+     const collectionID = 1;
+    return this.NftCreator.createNFTcall(collectionID, nft);
+   }
 
-  //   };
-  //   return await this.collectionCreator.createCollectionCall(collectionDto);
-  // }
+   async testCreateCol(): Promise<Extrinsic> {
+     const collectionDto: CollectionDto = {
+      owner: "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",
+      metadata: "Meta",
+      name: "Test Collection",
+      file: null,
+
+     };
+     return this.CollectionCreator.createCollectionCall(collectionDto);
+   }
 }
