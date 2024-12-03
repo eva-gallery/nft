@@ -14,4 +14,9 @@ export class EvaController {
   getEvaCollection() {
     return this.appService.getEvaCollection();
   }
+
+  @Get("ipfs/url")
+  getEvaIpfsUrl() {
+    return this.appService.getEvaIpfsUrl();
+  }
 }

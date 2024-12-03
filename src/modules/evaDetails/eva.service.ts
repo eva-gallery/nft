@@ -19,4 +19,8 @@ export class EvaService {
   getEvaCollection(): string {
     return this.configService.get("EVA_GALLERY_COLLECTION");
   }
+
+  getEvaIpfsUrl(): string {
+    return this.configService.get("IPFS_URL");
+  }
 }
