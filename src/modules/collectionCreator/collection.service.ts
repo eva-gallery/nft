@@ -109,7 +109,7 @@ export class collectionCreator {
         createCollection(api, owner),
       ];
       if (metadata) {
-        calls.push(setCollectionMetadata(api, collectionId, cidMeta.path));
+        calls.push(setCollectionMetadata(api, collectionId, "ipfs://ipfs/"+cidMeta.path));
       }
       // Create the batched transaction
       const batchAllTx = api.tx.utility.batchAll(calls);
