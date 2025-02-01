@@ -1,23 +1,29 @@
 # Stage 1: Build the Nest.js application
 FROM node:23-alpine AS builder
 
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json for dependency installation
-COPY package.json package-lock.json ./
+# Copy package.json and pnpm-lock.yaml for dependency installation
+COPY package.json pnpm-lock.yaml ./
 
 # Install dependencies
-RUN npm install
+RUN pnpm install
 
 # Copy the rest of the application source code
 COPY . .
 
 # Build the application
-RUN npm run build
+RUN pnpm build
 
 # Stage 2: Run the application with a minimal image
 FROM node:23-alpine AS runner
+
+# Install pnpm again for the runtime stage
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # Set environment variables
 ENV NODE_ENV=production
@@ -29,7 +35,7 @@ WORKDIR /app
 COPY package.json ./
 
 # Install only production dependencies
-RUN npm install --only=production
+RUN pnpm install --only=production
 
 # Copy built application from the build stage
 COPY --from=builder /app/dist ./dist

@@ -13,22 +13,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Setup Node.js 
-      uses: actions/setup-node@v4
+    - uses: actions/checkout@v3
+        
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v3 
       with:
-        node-version: '23.x'
+        version: 9 
 
     - name: Install deps
-      run: npm ci
+      run: pnpm i
       
     - name: Build
-      run: npm run build 
+      run: pnpm build 
 
     - name: Lint
-      run: npm run lint
+      run: pnpm lint
       
     - name: Test
-      run: npm run test
+      run: pnpm test
