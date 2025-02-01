@@ -8,13 +8,13 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN npm install
+RUN pnpm install
 
 # Copy the rest of the application source code
 COPY . .
 
 # Build the application
-RUN npm run build
+RUN pnpm build
 
 # Stage 2: Run the application with a minimal image
 FROM node:23-alpine AS runner
@@ -29,7 +29,7 @@ WORKDIR /app
 COPY package.json ./
 
 # Install only production dependencies
-RUN npm install --only=production
+RUN pnpm install --only=production
 
 # Copy built application from the build stage
 COPY --from=builder /app/dist ./dist

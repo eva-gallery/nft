@@ -22,13 +22,13 @@ jobs:
         node-version: '23.x'
 
     - name: Install deps
-      run: npm ci
+      run: pnpm i
       
     - name: Build
-      run: npm run build 
+      run: pnpm build 
 
     - name: Lint
-      run: npm run lint
+      run: pnpm lint
       
     - name: Test
-      run: npm run test
+      run: pnpm test

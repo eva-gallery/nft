@@ -37,7 +37,7 @@ async function nextItemId(apiPromise: ApiPromise, collectionID: number) {
     const items = await api.query.nfts.item.entries(collectionID.toString());
     const formattedItems = items.map(([key, value]) => {
       const itemId = key.args.map(arg => arg.toHuman());
-      const itemDetails = value.unwrap().toHuman();
+      const itemDetails = (value as any).unwrap().toHuman();
       return [itemId, itemDetails];
     });
     
