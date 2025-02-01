@@ -5,7 +5,7 @@ FROM node:23-alpine AS builder
 WORKDIR /app
 
 # Copy package.json and package-lock.json for dependency installation
-COPY package.json package-lock.json ./
+COPY package.json pnpm-lock.yaml ./
 
 # Install dependencies
 RUN pnpm install
