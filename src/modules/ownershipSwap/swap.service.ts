@@ -12,7 +12,8 @@ import { TransactionService } from "@common/utils";
 export class swapCreator {
   private readonly logger = new Logger(swapCreator.name);
 
-  constructor(private configService: ConfigService<AppConfig>,
+  constructor(
+    private configService: ConfigService<AppConfig>,
     private readonly transactionService: TransactionService,
   ) {}
   async createSwapCall(
@@ -28,7 +29,10 @@ export class swapCreator {
       const call = api.tx.nfts.transfer(collectionID, assetID, address);
       console.log(assetID, collectionID, address);
       // Use the new signAndSendTransaction function
-      const txHash = await this.transactionService.signAndSendTransaction(api, call);
+      const txHash = await this.transactionService.signAndSendTransaction(
+        api,
+        call,
+      );
       return txHash;
     } catch (error) {
       this.logger.error("Error creating swap call", error);

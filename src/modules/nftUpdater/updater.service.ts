@@ -7,7 +7,10 @@ import { Extrinsic } from "@polkadot/types/interfaces";
 import { UpdaterDto } from "./dto/UpdaterDto";
 import { create } from "ipfs-http-client";
 
-export function parseAssetId(input: string): { collectionId: number; assetId: number } {
+export function parseAssetId(input: string): {
+  collectionId: number;
+  assetId: number;
+} {
   // Regular expression to match the pattern "u-collectionId-assetId"
   const uniquePattern = /^u-(\d+)-(\d+)$/;
   // Regular expression to match the pattern "collectionId-assetId"
@@ -41,7 +44,7 @@ export class UpdaterCreator {
     ids: string,
     newMetadata: UpdaterDto,
   ): Promise<Extrinsic> {
-    const {imgType, imgIpfs, name, metadata } = newMetadata;
+    const { imgType, imgIpfs, name, metadata } = newMetadata;
 
     let metadataCid = null;
 

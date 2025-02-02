@@ -14,42 +14,40 @@ export class AppService {
     private readonly NftCreator: nftCreator,
     private readonly MetadataService: metadataService,
     private readonly SwapCreator: swapCreator,
-    private readonly CollectionCreator: collectionCreator
+    private readonly CollectionCreator: collectionCreator,
   ) {}
 
-   async testCreateSwapCall(): Promise<Extrinsic> {
-     const nft: SwapDto = {
-       address: "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",
-     };
-     return this.SwapCreator.getPayCall(nft.address);
-   }
+  async testCreateSwapCall(): Promise<Extrinsic> {
+    const nft: SwapDto = {
+      address: "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",
+    };
+    return this.SwapCreator.getPayCall(nft.address);
+  }
 
-   async testQueryMetadata(): Promise<string> {
-     const address = "EZwaNLfEwAMYcEdbp7uKYFCjnsn43S85pm6BumT5UwvZQvB";
+  async testQueryMetadata(): Promise<string> {
+    const address = "EZwaNLfEwAMYcEdbp7uKYFCjnsn43S85pm6BumT5UwvZQvB";
     return this.MetadataService.getAccountNFTMetadata(address);
-   }
+  }
 
-   async testCreateNft(): Promise<Extrinsic> {
-      
-     const nft: NftDto = {
-       name: "Test NFT",
-       metadata: "Meta",
-       owner: "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",
-       file: null,
-     };
+  async testCreateNft(): Promise<Extrinsic> {
+    const nft: NftDto = {
+      name: "Test NFT",
+      metadata: "Meta",
+      owner: "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",
+      file: null,
+    };
 
-     const collectionID = 1;
+    const collectionID = 1;
     return this.NftCreator.createNFTcall(collectionID, nft);
-   }
+  }
 
-   async testCreateCol(): Promise<Extrinsic> {
-     const collectionDto: CollectionDto = {
+  async testCreateCol(): Promise<Extrinsic> {
+    const collectionDto: CollectionDto = {
       owner: "13TrdLhMVLcwcEhMYLcqrkxAgq9M5gnK1LZKAF4VupVfQDUg",
       metadata: "Meta",
       name: "Test Collection",
       file: null,
-
-     };
-     return this.CollectionCreator.createCollectionCall(collectionDto);
-   }
+    };
+    return this.CollectionCreator.createCollectionCall(collectionDto);
+  }
 }

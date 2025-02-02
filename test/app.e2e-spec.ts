@@ -33,9 +33,7 @@ describe("App E2E Tests", () => {
     return request(app.getHttpServer())
       .get("/test-create-nft")
       .expect(200)
-      .expect(
-        '{}',
-      );
+      .expect("{}");
   });
 
   it("/collection (GET)", () => {
@@ -62,14 +60,16 @@ describe("App E2E Tests", () => {
       .expect(200)
       .expect([
         {
-          id: '110-1352993712',
-          createdAt: '2023-08-31T09:57:30.316000Z',
-          name: 'Early Participants of Kusama OpenGov - common',
-          image: 'ipfs://ipfs/bafybeic7whoguawde3i5nznqw5g77oah6ctla33h7om3t6swat7atln7nu',
-          metadata: 'ipfs://ipfs/bafkreieaguxsapna3nkfz2jb7igucuwiab3jcrippeexwxoakiqacw47oe',
-          currentOwner: 'EZwaNLfEwAMYcEdbp7uKYFCjnsn43S85pm6BumT5UwvZQvB',
-          issuer: 'DT7kRjGFvRKxGSx5CPUCA1pazj6gzJ6Db11xmkX4yYSNK7m'
-        }
+          id: "110-1352993712",
+          createdAt: "2023-08-31T09:57:30.316000Z",
+          name: "Early Participants of Kusama OpenGov - common",
+          image:
+            "ipfs://ipfs/bafybeic7whoguawde3i5nznqw5g77oah6ctla33h7om3t6swat7atln7nu",
+          metadata:
+            "ipfs://ipfs/bafkreieaguxsapna3nkfz2jb7igucuwiab3jcrippeexwxoakiqacw47oe",
+          currentOwner: "EZwaNLfEwAMYcEdbp7uKYFCjnsn43S85pm6BumT5UwvZQvB",
+          issuer: "DT7kRjGFvRKxGSx5CPUCA1pazj6gzJ6Db11xmkX4yYSNK7m",
+        },
       ]);
   });
 });

@@ -1,7 +1,6 @@
 import { Controller, Get } from "@nestjs/common";
 import { EvaService } from "./eva.service";
 
-
 @Controller("eva")
 export class EvaController {
   constructor(private readonly appService: EvaService) {}

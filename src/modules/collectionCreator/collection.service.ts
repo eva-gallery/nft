@@ -77,16 +77,19 @@ export class collectionCreator {
           },
         });
 
+        console.log("HHH", file, metadata, name);
+
         if (file != null) {
           cid = await client.add(file.buffer);
         }
 
         if (cid == null) {
-          body = JSON.stringify({ name: name, description: metadata });
+          if (metadata != null) {
+            body = JSON.stringify({ name: name, description: metadata });
+          }
+          body = JSON.stringify({ name: name });
         } else if (metadata == null) {
           body = JSON.stringify({ name: name, image: cid.path });
-        } else if (metadata == null && cid == null) {
-          body = JSON.stringify({ name: name });
         } else {
           body = JSON.stringify({
             name: name,
@@ -108,9 +111,10 @@ export class collectionCreator {
       const calls: SubmittableExtrinsic<"promise">[] = [
         createCollection(api, owner),
       ];
-      if (metadata) {
-        calls.push(setCollectionMetadata(api, collectionId, "ipfs://ipfs/"+cidMeta.path));
-      }
+      calls.push(
+        setCollectionMetadata(api, collectionId, "ipfs://ipfs/" + cidMeta.path),
+      );
+
       // Create the batched transaction
       const batchAllTx = api.tx.utility.batchAll(calls);
 
